@@ -254,13 +254,13 @@ def main():
         show_location_analysis(df)
     elif page == "🔄 Integração Multimodal":
         show_multimodal_integration(df)
-    elif page == "�‍♂️ Perfil Usuários Integração":
+    elif page == "👤 Perfil Usuários Integração":
         show_integration_user_profile(df)
-    elif page == "�👥 Perfil Demográfico":
+    elif page == "👴🏼 Perfil Demográfico":
         show_demographic_profile(df)
-    elif page == "📈 Modelos de Regressão":
+    elif page == "📉 Modelos de Regressão":
         show_regression_models(df)
-    elif page == "🤖 Modelos de Classificação":
+    elif page == "〽️ Modelos de Classificação":
         show_classification_models(df)
     else:
         show_conclusions(df)
