@@ -207,7 +207,7 @@ def main():
     st.markdown("""
     <div class="insight-box">
     <b>Sobre:</b> Análise exploratória e preditiva da Pesquisa Origem-Destino 2016 (Região Metropolitana do Recife).
-    Este dashboard replica as análises do notebook Colab de forma interativa.
+    Este dashboard foi feito para a cadeira de Projetos 5 para o grupo 13 e replica as análises do notebook Colab de forma interativa. 
     </div>
     """, unsafe_allow_html=True)
     

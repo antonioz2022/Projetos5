@@ -1,10 +1,8 @@
 ﻿# 🚌 Dashboard de Mobilidade Urbana - RMR 2016
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/antonioz2022/Projetos5/blob/main/projetos5_v3.ipynb)
-[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](http://localhost:8501)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://g13-multimodais-rmr.streamlit.app)
 [![Docker](https://img.shields.io/badge/docker-ready-blue?logo=docker)](https://www.docker.com/)
-
-> **TL;DR**: Execute `docker-compose up -d` na pasta `streamlit_app/` e acesse http://localhost:8501
 
 ---
 
@@ -12,19 +10,26 @@
 
 Análise completa da **Pesquisa Origem-Destino 2016 da Região Metropolitana do Recife (RMR)**, com foco em padrões de mobilidade urbana e uso de transporte público.
 
+### 🔗 Links 
+- [Fonte dos Dados](http://dados.recife.pe.gov.br/dataset/pesquisa-origem-destino/resource/2452573b-c07c-442e-a2e2-92af3190d8b4)
+
+- [Plano de Análise e Preparação dos Dados](https://docs.google.com/document/d/1O-OcNtFVkVN8_pLJhpScSWqNUMG3TVe4WHvTLtoHWRg/edit?tab=t.0)
+- [Colab](https://colab.research.google.com/github/antonioz2022/Projetos5/blob/main/projetos5_v3.ipynb)
+- [Dashboard](https://g13-multimodais-rmr.streamlit.app)
+
+
 ### ✨ Destaques:
 - 🎯 **Dashboard Interativo** com 10 páginas de análise
 - 🤖 **3 Modelos de Machine Learning** para classificação
 - 📊 **20+ Visualizações Interativas** (Plotly + Matplotlib)
 - 📓 **Notebook Jupyter** com análise exploratória completa
-- 🐳 **Docker** para deploy facilitado
-- 📈 **58.644 registros** analisados
+-  **58.644 registros** analisados
 
 ---
 
-## 🚀 Execução Rápida
+## 🚀 Como Rodar Localmente
 
-### 🐳 Docker (Recomendado)
+### Opção 1: 🐳 Com Docker (Recomendado)
 
 ```bash
 cd streamlit_app
@@ -35,15 +40,15 @@ docker-compose up -d
 
 **Parar:** `docker-compose down`
 
----
-
-### 💻 Sem Docker
+### Opção 2: 💻 Sem Docker
 
 ```bash
 cd streamlit_app
 pip install -r requirements.txt
 streamlit run app.py
 ```
+
+**Acesse:** http://localhost:8501
 
 ---
 
@@ -109,25 +114,12 @@ streamlit run app.py
 
 ## 🔑 Principais Insights
 
-### 📍 Modal Share
-- **Ônibus domina:** 43.8% das viagens ao trabalho
-- **A pé em segundo lugar:** 30.2% das viagens dos filhos à escola
-- **Metrô:** Modal importante na região metropolitana
-
-### 🔄 Multimodalidade
-- **~29% das viagens** utilizam mais de um modal
-- **Combinação mais comum:** Ônibus + Metrô
-- **Integração formal baixa:** Apenas 15.2% usam terminais
-
-### 👥 Perfil Demográfico
-- **Mulheres:** Ligeiramente maioria nas viagens
-- **Faixa etária ativa:** 25-59 anos predomina
-- **Renda:** 71% ganham até 2 salários mínimos
-
-### 🤖 Machine Learning
-- **Random Forest:** Melhor modelo (80% acurácia)
-- **Features importantes:** Renda e número de modais
-- **Aplicação prática:** Previsão de demanda por integração
+- � **Ônibus domina:** 43.8% das viagens ao trabalho
+- 🚶 **A pé em segundo lugar:** 30.2% das viagens dos filhos à escola
+- 🔄 **~29% das viagens** utilizam mais de um modal (multimodal)
+- 🤝 **Combinação mais comum:** Ônibus + Metrô
+- ⚠️ **Integração formal baixa:** Apenas 15.2% usam terminais
+- 🤖 **Random Forest:** Melhor modelo de ML (80% acurácia)
 
 ---
 
@@ -138,16 +130,14 @@ streamlit run app.py
 - **Pandas** - Manipulação de dados
 - **NumPy** - Operações numéricas
 - **Scikit-learn** - Machine Learning
+- **Docker** - Containerização
+- **Docker Compose** - Orquestração
 
 ### Visualização
 - **Streamlit** - Dashboard interativo
 - **Plotly** - Gráficos interativos
 - **Matplotlib** - Visualizações estáticas
 - **Seaborn** - Gráficos estatísticos
-
-### Deploy
-- **Docker** - Containerização
-- **Docker Compose** - Orquestração
 
 ---
 
@@ -184,7 +174,6 @@ Projetos5/
    - Ambos usam o mesmo subset (top8) para cálculo
 
 3. **Random Forest:**
-   - Ajustado `max_depth` de 5 para 10 (igual ao Colab)
    - Melhoria na acurácia e diferenciação dos modelos
 
 ### 🎨 Melhorias Visuais
@@ -207,76 +196,4 @@ Projetos5/
 - Código mais limpo e eficiente
 
 ---
-
-## 📖 Documentação Adicional
-
-### Dataset
-- **Fonte:** Pesquisa Origem-Destino RMR 2016
-- **Registros:** 58.644 viagens
-- **Variáveis:** 51 colunas
-- **Contextos:** Trabalho, Aula, Filhos
-
-### Notebook Colab
-O arquivo `projetos5_v3.ipynb` contém:
-- Análise exploratória completa
-- Tratamento de dados
-- Visualizações detalhadas
-- Modelos de ML com validação
-- Todas as análises que inspiraram o dashboard
-
-**Acesse:** [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/antonioz2022/Projetos5/blob/main/projetos5_v3.ipynb)
-
----
-
-## 🚀 Deploy
-
-### Streamlit Cloud (Gratuito)
-1. Push para GitHub
-2. Acesse [share.streamlit.io](https://share.streamlit.io)
-3. Conecte o repositório
-4. Defina o arquivo principal: `streamlit_app/app.py`
-5. Deploy automático ✨
-
-### Docker em Cloud
-- **AWS:** ECS/Fargate
-- **Azure:** Container Instances
-- **Google Cloud:** Cloud Run
-- **DigitalOcean:** App Platform
-- **Heroku:** Container Registry
-
----
-
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Sinta-se à vontade para:
-- Reportar bugs
-- Sugerir melhorias
-- Adicionar novas análises
-- Melhorar visualizações
-
----
-
-## 📄 Licença
-
-Este projeto foi desenvolvido para fins acadêmicos.
-
----
-
-## 👨‍💻 Autor
-
-**Projeto 5 - Análise de Mobilidade Urbana**  
-Desenvolvido como parte de estudos em Ciência de Dados
-
----
-
-## 💡 Dicas de Uso
-
-1. **Wide Mode:** Use o modo "Wide" do Streamlit para melhor visualização
-2. **Filtros:** Explore os filtros disponíveis em cada página
-3. **Gráficos Interativos:** Passe o mouse sobre os gráficos para mais detalhes
-4. **Notebook:** Consulte o Colab notebook para análises mais profundas
-5. **Performance:** O Docker garante ambiente isolado e consistente
-
----
-
 🎯 **Pronto para começar?** Execute `docker-compose up -d` e explore os dados!
