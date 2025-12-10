@@ -306,7 +306,11 @@ def show_overview(df):
 
 def show_descriptive_stats(df):
     st.markdown('<h2 class="sub-header">📊 Estatísticas Descritivas</h2>', unsafe_allow_html=True)
-    st.markdown("<b>📌 Nota:</b> Esta é uma análise geral de todos os respondentes da Pesquisa Origem-Destino 2016 da RMR.", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="insight-box">
+    <b>📌 Nota:</b> Esta é uma análise geral de todos os respondentes da Pesquisa Origem-Destino 2016 da RMR.
+    </div>
+    """, unsafe_allow_html=True)
     # Estatísticas de Sexo
     st.markdown("### 1️⃣ Sexo")
     sexo_counts = df['sexo'].value_counts()
