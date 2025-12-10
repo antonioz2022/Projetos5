@@ -74,12 +74,28 @@ NIVEL_ESTUDO_MAP = {
 @st.cache_data
 def load_data():
     """Carrega o dataset com cache"""
-    # Tenta primeiro o caminho do Docker, depois o caminho local
-    try:
-        df = pd.read_csv('/app/dados/dataset2.csv', low_memory=False)
-    except FileNotFoundError:
-        df = pd.read_csv('../dados/dataset2.csv', low_memory=False)
-    return df
+    import os
+    
+    # Lista de caminhos possíveis para tentar
+    possible_paths = [
+        '../dados/dataset2.csv',  # Caminho relativo local
+        'dados/dataset2.csv',     # Caminho relativo do Streamlit Cloud
+        '/app/dados/dataset2.csv', # Caminho do Docker
+        os.path.join(os.path.dirname(__file__), '../dados/dataset2.csv')  # Caminho absoluto relativo
+    ]
+    
+    for path in possible_paths:
+        try:
+            if os.path.exists(path):
+                df = pd.read_csv(path, low_memory=False)
+                return df
+        except (FileNotFoundError, PermissionError):
+            continue
+    
+    # Se nenhum caminho funcionou, levanta erro
+    raise FileNotFoundError(
+        f"Arquivo dataset2.csv não encontrado. Tentou os seguintes caminhos: {possible_paths}"
+    )
 
 def clean_modal(value):
     """Limpa valores de modais e corrige erros (ex: 2005 → 5)"""
