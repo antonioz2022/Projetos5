@@ -1,4 +1,4 @@
-import streamlit as st
+﻿import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -229,9 +229,10 @@ def main():
             "🚌 Modal Share",
             "🗺️ Análise por Localização",
             "🔄 Integração Multimodal",
-            "👥 Perfil Demográfico",
-            "📈 Modelos de Regressão",
-            "🤖 Modelos de Classificação",
+            "👤 Perfil Usuários Integração",
+            "👴🏼 Perfil Demográfico",
+            "📉 Modelos de Regressão",
+            "〽️ Modelos de Classificação",
             "📝 Conclusões"
         ]
     )
@@ -253,7 +254,9 @@ def main():
         show_location_analysis(df)
     elif page == "🔄 Integração Multimodal":
         show_multimodal_integration(df)
-    elif page == "👥 Perfil Demográfico":
+    elif page == "�‍♂️ Perfil Usuários Integração":
+        show_integration_user_profile(df)
+    elif page == "�👥 Perfil Demográfico":
         show_demographic_profile(df)
     elif page == "📈 Modelos de Regressão":
         show_regression_models(df)
@@ -590,6 +593,150 @@ def show_multimodal_integration(df):
                  x='Porcentagem', y='Combinacao', orientation='h',
                  title='Top 10 Combinações de Modais Multimodais')
     st.plotly_chart(fig, use_container_width=True)
+
+def show_integration_user_profile(df):
+    """Análise do perfil dos usuários de integração entre modais"""
+    st.markdown('<h2 class="sub-header">🚴‍♂️ Perfil dos Usuários de Integração</h2>', 
+                unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="insight-box">
+    <b>📌 Sobre esta análise:</b> Esta seção analisa o perfil demográfico dos usuários que 
+    utilizam <b>integração formal</b> entre modais (terminais de integração). Diferente da análise 
+    de multimodalidade, aqui focamos especificamente em quem declarou usar terminais de integração 
+    para fazer suas viagens.
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Filtrar usuários de integração
+    df['terminal_int_trabalho'] = df['terminal_int_trabalho'].astype(str).str.strip()
+    df['terminal_aula'] = df['terminal_aula'].astype(str).str.strip()
+    
+    df["usa_int_trabalho"] = (
+        (df["utiliza_terminal_int_trabalho"] == 1) | 
+        ((df["terminal_int_trabalho"] != "0") & (df["terminal_int_trabalho"] != "nan"))
+    )
+    df["usa_int_aula"] = (
+        (df["utiliza_integracao_aula"] == 1) | 
+        ((df["terminal_aula"] != "0") & (df["terminal_aula"] != "nan"))
+    )
+    df["usuario_integracao"] = df["usa_int_trabalho"] | df["usa_int_aula"]
+    
+    # Dataset de usuários de integração
+    df_int = df[df["usuario_integracao"]].copy()
+    df_int = df_int[df_int['sexo'].isin([1, 2])]  # Apenas Masculino/Feminino
+    
+    # KPIs principais
+    st.markdown("### 📊 Indicadores Principais")
+    col1, col2, col3 = st.columns(3)
+    
+    total_usuarios = len(df_int)
+    pct_populacao = (total_usuarios / len(df)) * 100
+    sexo_predominante = df_int['sexo_desc'].value_counts().index[0]
+    
+    with col1:
+        st.metric("👥 Total de Usuários", f"{total_usuarios:,}")
+    with col2:
+        st.metric("📈 % da População", f"{pct_populacao:.1f}%")
+    with col3:
+        st.metric("🎯 Sexo Predominante", sexo_predominante)
+    
+    st.markdown("---")
+    
+    # Análise por Sexo
+    st.markdown("### 👫 Distribuição por Sexo")
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        sexo_counts = df_int['sexo_desc'].value_counts()
+        fig = px.bar(x=sexo_counts.index, y=sexo_counts.values,
+                     labels={'x': 'Sexo', 'y': 'Número de Usuários'},
+                     title='Usuários de Integração por Sexo',
+                     color=sexo_counts.index,
+                     color_discrete_map={'Masculino': '#1f77b4', 'Feminino': '#ff7f0e'})
+        fig.update_layout(showlegend=False)
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with col2:
+        st.markdown("#### 📋 Estatísticas")
+        for sexo, qtd in sexo_counts.items():
+            pct = (qtd / total_usuarios) * 100
+            st.write(f"**{sexo}:**")
+            st.write(f"• {qtd:,} usuários")
+            st.write(f"• {pct:.1f}%")
+            st.write("")
+    
+    st.markdown("---")
+    
+    # Análise por Faixa Etária
+    st.markdown("### 📅 Distribuição por Faixa Etária")
+    
+    ordem_idade = ['Até 6 anos', '6 a 15 anos', '16 a 24 anos', 
+                   '25 a 39 anos', '40 a 59 anos', 'Acima de 60 anos']
+    
+    idade_counts = df_int['faixa_etaria_desc'].value_counts()
+    idade_counts = idade_counts.reindex(ordem_idade).dropna()
+    
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        fig = px.bar(x=idade_counts.index, y=idade_counts.values,
+                     labels={'x': 'Faixa Etária', 'y': 'Número de Usuários'},
+                     title='Usuários de Integração por Faixa Etária',
+                     color=idade_counts.values,
+                     color_continuous_scale='Viridis')
+        fig.update_layout(showlegend=False, xaxis_tickangle=-45)
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with col2:
+        st.markdown("#### 📋 Estatísticas")
+        for idade, qtd in idade_counts.items():
+            pct = (qtd / total_usuarios) * 100
+            st.write(f"**{idade}:**")
+            st.write(f"• {qtd:,} usuários")
+            st.write(f"• {pct:.1f}%")
+    
+    st.markdown("---")
+    
+    # Análise por Renda
+    st.markdown("### 💰 Distribuição por Faixa de Renda")
+    
+    ordem_renda = ['Sem rendimento', 'Até 1 SM', '1 a 2 SM', '2 a 3 SM', 
+                   '3 a 5 SM', '5 a 10 SM', '10 a 20 SM', '+ 20 SM', 'Sem declaração']
+    
+    renda_counts = df_int['renda_desc'].value_counts()
+    renda_counts = renda_counts.reindex(ordem_renda).dropna()
+    
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        fig = px.bar(x=renda_counts.index, y=renda_counts.values,
+                     labels={'x': 'Faixa de Renda', 'y': 'Número de Usuários'},
+                     title='Usuários de Integração por Renda',
+                     color=renda_counts.values,
+                     color_continuous_scale='Magma')
+        fig.update_layout(showlegend=False, xaxis_tickangle=-45)
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with col2:
+        st.markdown("#### 📋 Estatísticas")
+        for renda, qtd in renda_counts.items():
+            pct = (qtd / total_usuarios) * 100
+            st.write(f"**{renda}:**")
+            st.write(f"• {qtd:,} usuários")
+            st.write(f"• {pct:.1f}%")
+    
+    st.markdown("---")
+    
+    st.markdown("""
+    <div class="insight-box">
+    <b>💡 Principais Insights:</b><br>
+    • A maioria dos usuários de integração está na faixa economicamente ativa (25-59 anos)<br>
+    • Predominância de faixas de renda mais baixas (até 3 SM), indicando que o sistema de integração 
+      é crucial para a mobilidade de populações de menor poder aquisitivo<br>
+    • O uso de terminais de integração é uma prática amplamente adotada na RMR
+    </div>
+    """, unsafe_allow_html=True)
 
 def show_demographic_profile(df):
     st.markdown('<h2 class="sub-header">👥 Perfil Demográfico</h2>', 
