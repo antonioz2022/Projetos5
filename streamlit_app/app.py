@@ -207,7 +207,7 @@ def main():
     st.markdown("""
     <div class="insight-box">
     <b>Sobre:</b> Análise exploratória e preditiva da Pesquisa Origem-Destino 2016 (Região Metropolitana do Recife).
-    Este dashboard foi feito para a cadeira de Projetos 5 para o grupo 13 e replica as análises do notebook Colab de forma interativa. 
+    Este dashboard foi feito para a cadeira de Projetos 5 pelo G13 e replica as análises do notebook Colab de forma interativa. 
     </div>
     """, unsafe_allow_html=True)
     
@@ -306,7 +306,7 @@ def show_overview(df):
 
 def show_descriptive_stats(df):
     st.markdown('<h2 class="sub-header">📊 Estatísticas Descritivas</h2>', unsafe_allow_html=True)
-    
+    st.markdown("<b>📌 Nota:</b> Esta é uma análise geral de todos os respondentes da Pesquisa Origem-Destino 2016 da RMR.", unsafe_allow_html=True)
     # Estatísticas de Sexo
     st.markdown("### 1️⃣ Sexo")
     sexo_counts = df['sexo'].value_counts()
@@ -350,13 +350,22 @@ def show_descriptive_stats(df):
     
     # Top 10 Bairros
     st.markdown("### 4️⃣ Bairros (Top 10)")
+    
+    st.markdown("""
+    <div class="insight-box">
+    <b>📌 Nota:</b> Esta é uma análise geral de todos os respondentes da Pesquisa Origem-Destino 2016 da RMR.
+    Os bairros estão ordenados do mais frequente (topo) ao menos frequente.
+    </div>
+    """, unsafe_allow_html=True)
+    
     top_bairros = df['bairro_residencia'].value_counts().head(10)
     top_bairros_pct = df['bairro_residencia'].value_counts(normalize=True).head(10) * 100
     bairros_df = pd.DataFrame({'Qtd': top_bairros, '%': top_bairros_pct.round(2)})
     
-    fig = px.bar(x=top_bairros.values, y=top_bairros.index, orientation='h',
+    # Inverter a ordem para mostrar do mais frequente (topo) para o menos frequente (embaixo)
+    fig = px.bar(x=top_bairros.values[::-1], y=top_bairros.index[::-1], orientation='h',
                  labels={'x': 'Número de respondentes', 'y': 'Bairro'},
-                 title='Top 10 bairros de residência')
+                 title='Top 10 bairros de residência (do mais para o menos frequente)')
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(bairros_df)
 
