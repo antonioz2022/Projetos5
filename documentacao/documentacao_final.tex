@@ -1,0 +1,1087 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{listings}
+\usepackage{xcolor} 
+%\usepackage{indentfirst}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{caption}
+\captionsetup{labelformat=empty}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\setlength{\parindent}{1cm}
+\setlength{\parskip}{0.5em}
+\lstset{
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {ã}{{\~a}}1 {â}{{\^a}}1 {à}{{\`a}}1
+             {é}{{\'e}}1 {ê}{{\^e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
+             {ô}{{\^o}}1 {õ}{{\~o}}1 {ú}{{\'u}}1 {ç}{{\c{c}}}1
+             {Á}{{\'A}}1 {Ã}{{\~A}}1 {Â}{{\^A}}1 {À}{{\`A}}1
+             {É}{{\'E}}1 {Ê}{{\^E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1
+             {Ô}{{\^O}}1 {Õ}{{\~O}}1 {Ú}{{\'U}}1 {Ç}{{\c{C}}}1,
+    basicstyle=\small,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    breaklines=true,
+    frame=single,
+    captionpos=b,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange}
+}
+\makeatletter
+\renewcommand{\@makechapterhead}[1]{%
+  \vspace*{5pt} 
+  {\parindent \z@
+    \normalfont\Large\bfseries #1\par\nobreak
+    \vskip 15pt 
+  }}
+\makeatother
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+\frenchspacing
+
+\begin{titlepage}
+\begin{figure}[h!] 
+    \centering
+    \includegraphics[width=0.2\textwidth]{logo.png}
+    \label{fig:logo}
+\end{figure}
+\begin{center}
+    \large
+    \textbf{FACULDADE CESAR SCHOOL}\\
+    CURSO DE GRADUAÇÃO EM CIÊNCIA DA COMPUTAÇÃO
+
+    \vfill
+
+    \Huge
+    \textbf{Análise de Mobilidade Urbana na Região Metropolitana do Recife}
+    
+    \Large
+    \vspace{1em}
+    Dashboard Interativo e Análise de Dados
+
+    \vfill
+
+    \large
+    \textbf{Antônio Neto\\
+    Guilherme Rabelo\\
+    Júlia Sales\\
+    Thiago Queiroz}
+
+    \vfill
+
+    \normalsize
+    Recife \\
+    Dezembro/2025
+\end{center}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+\renewcommand{\chaptername}{}  
+\renewcommand{\thechapter}{}   
+
+\chapter{1. Introdução}
+
+Este projeto, realizado para a cadeira de Projetos 5, visa desenvolver uma solução analítica e visual completa para análise de dados de mobilidade urbana na Região Metropolitana do Recife (RMR). O objetivo é transformar dados brutos da Pesquisa Origem-Destino 2016 em insights acionáveis através de visualizações interativas e modelos preditivos.
+
+\section*{1.1 Objetivos}
+
+\begin{itemize}
+    \item Desenvolver um dashboard interativo para visualização de padrões de mobilidade urbana
+    \item Analisar o comportamento multimodal vs. monomodal dos usuários
+    \item Identificar perfis demográficos dos usuários de transporte público
+    \item Implementar modelos de classificação e regressão para predições
+    \item Fornecer insights para possiveis soluções de mobilidade urbana
+\end{itemize}
+
+\section*{1.2 Links Úteis}
+
+\begin{itemize}
+    \item \href{https://g13-multimodais-rmr.streamlit.app}{Dashboard Online (Streamlit Cloud)}
+    \item \href{https://github.com/antonioz2022/Projetos5}{Repositório GitHub}
+    \item \href{https://colab.research.google.com/github/antonioz2022/Projetos5/blob/main/projetos5_v3.ipynb}{Notebook Colab (Análise Original)}
+    \item \href{https://docs.google.com/spreadsheets/d/1fZtjZqKxqQBY9aZ5XOJrxQKzXXXXXXXX}{Dataset Original (Google Docs)}
+\end{itemize}
+
+\section*{1.3 Evolução do Projeto}
+
+Este projeto seguiu um fluxo de trabalho típico de projetos de ciência de dados, evoluindo de uma análise exploratória inicial para uma aplicação interativa de produção.
+
+\subsection*{Fase 1: Análise Exploratória no Google Colab}
+
+O projeto iniciou com o desenvolvimento de um \textbf{notebook Jupyter no Google Colab} (\texttt{projetos5\_v3.ipynb}), disponível em:
+
+\begin{center}
+\href{https://colab.research.google.com/github/antonioz2022/Projetos5/blob/main/projetos5_v3.ipynb}{\texttt{https://colab.research.google.com/github/antonioz2022/Projetos5/blob/main/projetos5\_v3.ipynb}}
+\end{center}
+
+Nesta fase inicial, o foco estava em:
+\begin{itemize}
+    \item \textbf{Análise Exploratória de Dados (EDA):} Compreensão da estrutura do dataset, identificação de missing values, análise de distribuições
+    \item \textbf{Visualizações preliminares:} Testes de diferentes tipos de gráficos para identificar os mais adequados
+    \item \textbf{Prototipagem de modelos:} Experimentação com diferentes algoritmos de machine learning
+    \item \textbf{Iteração rápida:} Ambiente colaborativo permitiu testes ágeis e compartilhamento de resultados
+\end{itemize}
+
+\textbf{Vantagens do Colab nesta fase:}
+\begin{itemize}
+    \item Ambiente pronto para uso (sem necessidade de instalação)
+    \item Acesso gratuito a recursos de computação (GPU/TPU)
+    \item Colaboração em tempo real entre membros da equipe
+    \item Integração direta com Google Drive e GitHub
+\end{itemize}
+
+\subsection*{Fase 2: Dashboard Interativo em Streamlit}
+
+Após a consolidação das análises no Colab, o projeto evoluiu para um \textbf{dashboard interativo desenvolvido em Streamlit}, implantado no Streamlit Cloud:
+
+\begin{center}
+\href{https://g13-multimodais-rmr.streamlit.app}{\texttt{https://g13-multimodais-rmr.streamlit.app}}
+\end{center}
+
+Esta migração permitiu:
+\begin{itemize}
+    \item \textbf{Interatividade:} Usuários podem filtrar dados, selecionar variáveis e explorar diferentes perspectivas em tempo real
+    \item \textbf{Acessibilidade:} Dashboard web acessível de qualquer dispositivo, sem necessidade de instalar Python ou bibliotecas
+    \item \textbf{Organização modular:} 11 páginas especializadas, cada uma focada em um aspecto da análise
+    \item \textbf{Produção:} Aplicação pronta para uso por stakeholders (gestores públicos, pesquisadores, população)
+    \item \textbf{Deploy na nuvem:} Hospedagem no Streamlit Cloud permite acesso público 24/7
+\end{itemize}
+
+\textbf{Transformações realizadas:}
+\begin{itemize}
+    \item Código do notebook refatorado em funções modulares e reutilizáveis
+    \item Visualizações estáticas transformadas em gráficos interativos com Plotly Express
+    \item Adição de widgets de controle (selectbox, radio buttons, sliders)
+    \item Implementação de sistema de navegação por sidebar
+    \item Containerização com Docker para reprodutibilidade
+\end{itemize}
+
+\subsection*{Benefícios desta Abordagem}
+
+O workflow \textbf{Colab → Streamlit} combina o melhor de dois mundos:
+
+\begin{itemize}
+    \item \textbf{Exploração ágil:} Colab permite testar hipóteses rapidamente sem preocupação com infraestrutura
+    \item \textbf{Produção robusta:} Streamlit oferece uma aplicação estável e escalável para usuários finais
+    \item \textbf{Documentação viva:} Notebook serve como documentação técnica detalhada do processo analítico
+    \item \textbf{Democratização:} Dashboard torna insights acessíveis para públicos não-técnicos
+\end{itemize}
+
+Esta metodologia reflete as melhores práticas da indústria de ciência de dados, onde a análise exploratória em notebooks é seguida pela construção de produtos analíticos em frameworks especializados.
+
+\chapter{2. Histórico de Decisões}
+
+Esta seção documenta as principais decisões técnicas e analíticas tomadas durante o desenvolvimento do projeto.
+
+\section*{2.1 Escolha da Plataforma de Visualização}
+
+\textbf{Decisão:} Utilizar Streamlit como framework principal para o dashboard.
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item \textbf{Facilidade de desenvolvimento:} Streamlit permite criar dashboards interativos com código Python puro, sem necessidade de HTML/CSS/JavaScript
+    \item \textbf{Prototipagem rápida:} Ideal para iterações rápidas durante o desenvolvimento
+    \item \textbf{Deploy gratuito:} Streamlit Cloud oferece hospedagem gratuita com integração direta ao GitHub
+    \item \textbf{Interatividade nativa:} Widgets interativos (sliders, selectbox, radio buttons) já incluídos
+    \item \textbf{Integração com bibliotecas científicas:} Compatibilidade total com Pandas, Plotly, Matplotlib
+\end{itemize}
+
+\section*{2.2 Biblioteca de Visualização}
+
+\textbf{Decisão:} Utilizar Plotly Express como biblioteca principal, com Matplotlib/Seaborn para gráficos específicos.
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item \textbf{Interatividade:} Plotly oferece zoom, pan, hover tooltips nativamente
+    \item \textbf{Estética moderna:} Gráficos visualmente atraentes com configuração mínima
+    \item \textbf{Responsividade:} Adaptação automática a diferentes tamanhos de tela
+    \item \textbf{Documentação:} Excelente documentação e comunidade ativa
+\end{itemize}
+
+\section*{2.3 Estrutura de Navegação}
+
+\textbf{Decisão:} Organizar o dashboard em páginas temáticas acessadas por menu lateral (sidebar).
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item \textbf{Organização lógica:} Cada página representa uma etapa da análise ou um tema específico
+    \item \textbf{Facilita navegação:} Usuário pode ir direto ao conteúdo de interesse
+    \item \textbf{Performance:} Carrega apenas a página selecionada, reduzindo tempo de renderização
+    \item \textbf{Escalabilidade:} Fácil adicionar novas análises sem sobrecarregar interface
+\end{itemize}
+
+\textbf{Estrutura final:}
+\begin{enumerate}
+    \item Visão Geral
+    \item Estatísticas Descritivas
+    \item Tipo de Trajeto (Monomodal vs Multimodal)
+    \item Modal Share
+    \item Análise por Localização
+    \item Integração Multimodal
+    \item Perfil de Usuários de Integração
+    \item Perfil Demográfico
+    \item Modelos de Regressão
+    \item Modelos de Classificação
+    \item Conclusões
+\end{enumerate}
+
+\section*{2.4 Escolha de Tipos de Gráficos}
+
+\subsection*{Gráficos de Barras}
+\textbf{Uso:} Distribuições categóricas (sexo, faixa etária, renda, modais).
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item Fácil comparação entre categorias
+    \item Leitura imediata de valores absolutos
+    \item Amplamente compreendido pelo público geral
+\end{itemize}
+
+\subsection*{Gráficos de Pizza (Donut)}
+\textbf{Uso:} Proporções totais (distribuição por sexo, tipo de trajeto).
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item Visualização clara de proporções
+    \item Bom para categorias com poucas divisões (2-5 categorias)
+    \item Formato donut deixa espaço para métricas centrais
+\end{itemize}
+
+\subsection*{Heatmaps}
+\textbf{Uso:} Correlação entre bairros e modais, matrizes de confusão.
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item Identifica padrões em dados multidimensionais
+    \item Cores facilitam identificação de valores extremos
+    \item Compacto para grandes volumes de dados
+\end{itemize}
+
+\subsection*{Gráficos de Dispersão}
+\textbf{Uso:} Regressão linear (número de modais vs. outras variáveis).
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item Mostra relação entre variáveis numéricas
+    \item Permite identificar outliers
+    \item Facilita visualização de linha de tendência
+\end{itemize}
+
+\section*{2.5 Paleta de Cores}
+
+\textbf{Decisão:} Utilizar paletas de cores semanticamente significativas e acessíveis.
+
+\textbf{Diretrizes aplicadas:}
+\begin{itemize}
+    \item \textbf{Sexo:} Azul e laranja (evitando estereótipos rosa/azul tradicionais)
+    \item \textbf{Idade:} Gradiente viridis (sequencial, do claro ao escuro)
+    \item \textbf{Renda:} Gradiente magma (quente, indicando progressão)
+    \item \textbf{Modais:} Cores distintas para cada modal (ônibus: laranja, metrô: azul, etc.)
+    \item \textbf{Multimodal vs Monomodal:} Verde e roxo (cores contrastantes)
+\end{itemize}
+
+\section*{2.6 Tratamento de Dados}
+
+\textbf{Principais decisões de limpeza e processamento:}
+
+\begin{itemize}
+    \item \textbf{Valores ausentes:} Categorizar como "Não declarado" ou "Sem resposta" em vez de remover
+    \item \textbf{Modais múltiplos:} Converter strings separadas por vírgula em listas para análise
+    \item \textbf{Integração formal:} Identificar usuários por combinação de campos (flag + terminal escrito)
+    \item \textbf{Categorização de trajetos:} Classificar como monomodal (1 modal), multimodal (2+) ou sem resposta
+    \item \textbf{Ordenação de faixas:} Manter ordem lógica (idade, renda) em visualizações
+\end{itemize}
+
+\section*{2.7 Containerização com Docker}
+
+\textbf{Decisão:} Utilizar Docker para padronizar ambiente de desenvolvimento e deploy local.
+
+\textbf{Justificativa:}
+\begin{itemize}
+    \item \textbf{Reprodutibilidade:} Garante que o ambiente funciona igual em qualquer máquina
+    \item \textbf{Isolamento:} Evita conflitos de dependências com outros projetos
+    \item \textbf{Portabilidade:} Fácil compartilhar com equipe ou mover entre servidores
+    \item \textbf{Produção-ready:} Mesma imagem pode ser usada em produção
+\end{itemize}
+
+\textbf{Configuração:}
+\begin{itemize}
+    \item Base image: \texttt{python:3.11-slim}
+    \item Porta exposta: 8501 (padrão do Streamlit)
+    \item Volume mount: \texttt{./dados} para acesso ao dataset
+\end{itemize}
+
+\chapter{3. Capturas de Tela e Visualizações}
+
+\section*{3.1 Página Inicial - Visão Geral}
+
+\textbf{Descrição:} A página inicial apresenta KPIs principais e distribuições básicas da população pesquisada.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item \textbf{4 KPIs principais:}
+    \begin{itemize}
+        \item Trabalham: percentual da população que trabalha
+        \item Estudam: percentual da população que estuda
+        \item Multimodal: número absoluto de usuários multimodais
+        \item Média Modais: média de modais utilizados por pessoa
+    \end{itemize}
+    \item Gráfico de pizza: distribuição por sexo
+    \item Gráfico de barras: distribuição por faixa etária
+    \item Gráfico de barras: distribuição por renda
+\end{itemize}
+
+\textbf{Insights visuais:}
+\begin{itemize}
+    \item 71\% da população trabalha
+    \item 40,5\% estuda
+    \item 13.921 pessoas usam múltiplos modais
+    \item Média de 1,23 modais por pessoa
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{visaogeral.png}
+\caption{Visão Geral - distribuições demográficas}
+\end{figure}
+
+\section*{3.2 Estatísticas Descritivas}
+
+\textbf{Descrição:} Análise detalhada das características demográficas da população pesquisada.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item Distribuição por sexo (gráfico de barras horizontal)
+    \item Distribuição por idade (gráfico de barras vertical)
+    \item Distribuição por renda (gráfico de barras com 9 categorias)
+    \item Top 10 bairros mais frequentes (gráfico de barras horizontal ordenado)
+\end{itemize}
+
+\textbf{Nota importante:} Box destacado informando que "Esta é uma análise geral de quem respondeu a pesquisa", esclarecendo que os dados representam a amostra da pesquisa OD 2016.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{estatisticasdescritvas1.png}
+\hfill
+\includegraphics[width=0.45\textwidth]{estatisticasdescritvas2.png}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{estatisticasdescritvas3.png}
+\hfill
+\includegraphics[width=0.45\textwidth]{estatisticasdescritvas4.png}
+\caption{Estatísticas Descritivas - Distribuições demográficas da população pesquisada}
+\end{figure}
+
+\section*{3.3 Tipo de Trajeto (Monomodal vs Multimodal)}
+
+\textbf{Descrição:} Comparação entre usuários que usam um único modal vs. múltiplos modais.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item \textbf{4 KPIs principais:}
+    \begin{itemize}
+        \item Usuários Multimodais: 13.921 pessoas
+        \item \% Multimodais: 23,7\% da população
+        \item Usuários Monomodais: 45.553 pessoas
+        \item Máx. de Modais Usado: 2 modais
+    \end{itemize}
+    \item 3 gráficos de barras lado a lado: distribuição para trabalho, aula e filhos
+    \item Tabelas com contagens absolutas e percentuais
+\end{itemize}
+
+\textbf{Insights principais:}
+\begin{itemize}
+    \item Maioria das viagens é monomodal (77\% usam apenas 1 modal)
+    \item 13.921 usuários (23,7\%) são multimodais
+    \item Multimodalidade é mais comum em viagens ao trabalho
+    \item Viagens escolares tendem a ser mais simples (monomodais)
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{tipotrajeto.png}
+\caption{Tipo de Trajeto - Comparação Monomodal vs Multimodal}
+\end{figure}
+
+\section*{3.4 Modal Share}
+
+\textbf{Descrição:} Participação de cada modal no total de viagens.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item 3 gráficos de pizza (donut): modal share para trabalho, aula e filhos
+    \item Filtros interativos por sexo e faixa de renda
+    \item Top 10 modais mais utilizados em cada categoria
+\end{itemize}
+
+\textbf{Insights principais:}
+\begin{itemize}
+    \item Ônibus é o modal mais utilizado para ir ao trabalho ou a aula (aproximadamente 40-50\%)
+    \item "A pé" é o segundo mais comum no geral, especialmente para trajetos escolares
+    \item Carro particular tem participação significativa em faixas de renda mais altas
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{modalshare.png}
+\caption{Modal Share - Participação de cada modal por contexto}
+\end{figure}
+
+\section*{3.5 Análise por Localização}
+
+\textbf{Descrição:} Heatmap mostrando a relação entre bairros de residência e modais utilizados para trabalho.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item Heatmap grande: top 20 bairros vs. todos os modais
+    \item Escala de cores quente (amarelo-laranja-vermelho) indicando intensidade de uso
+\end{itemize}
+
+\textbf{Insights principais:}
+\begin{itemize}
+    \item Bairros periféricos concentram maior uso de ônibus
+    \item Bairros centrais apresentam maior diversidade de modais
+    \item Alguns bairros têm forte dependência de um único modal
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{analiseporlocalizacao.png}
+\caption{Análise por Localização - Heatmap de bairros vs modais}
+\end{figure}
+
+\section*{3.6 Integração Multimodal}
+
+\textbf{Descrição:} Análise das combinações de modais em viagens multimodais.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item Tabela: top 10 combinações de modais mais frequentes
+    \item Gráfico de barras horizontal: visualização das combinações
+    \item Percentual de cada combinação sobre o total
+\end{itemize}
+
+\textbf{Insights principais:}
+\begin{itemize}
+    \item "Ônibus + Metrô" é a combinação mais comum, indicando uso de integração terminal
+    \item "Ônibus + ""Carro (Dirirgido)" é frequente, indicando upessoas que esporadicamente usam transporte público
+    \item Combinações com 3+ modais são raras
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{top10modaismultimodais.png}
+\caption{Integração Multimodal - Top 10 combinações de modais}
+\end{figure}
+
+\section*{3.7 Perfil de Usuários de Integração}
+
+\textbf{Descrição:} Análise demográfica específica dos usuários que utilizam terminais de integração formal.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item \textbf{3 KPIs principais:}
+    \begin{itemize}
+        \item Total de Usuários: 11.299 pessoas
+        \item \% da População: 19,3\% da amostra pesquisada
+        \item Sexo Predominante: Masculino
+    \end{itemize}
+    \item Gráfico de barras: distribuição por sexo (com estatísticas laterais)
+    \item Gráfico de barras: distribuição por faixa etária (com estatísticas laterais)
+    \item Gráfico de barras: distribuição por renda (com estatísticas laterais)
+    \item Box de insights: principais conclusões sobre o perfil
+\end{itemize}
+
+\textbf{Insights principais:}
+\begin{itemize}
+    \item 11.299 usuários (19,3\%) utilizam terminais de integração formal
+    \item Sexo masculino é ligeiramente predominante
+    \item Predominância de faixas etárias economicamente ativas (25-59 anos)
+    \item Concentração em faixas de renda baixa (até 3 salários mínimos)
+    \item Sistema de integração é crucial para mobilidade de populações periféricas
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{perfilusuariosintegracao_distribuicaoporsexo.png}
+\hfill
+\includegraphics[width=0.45\textwidth]{perfilusuariosintegracao_distribuicaofaixaetaria.png}
+\caption{Perfil de Usuários de Integração - Distribuições demográficas}
+\end{figure}
+
+\section*{3.8 Perfil Demográfico}
+
+\textbf{Descrição:} Cruzamento entre características demográficas e escolha de modais.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item Tabela de crosstab: modal vs. sexo (valores percentuais)
+    \item Gráfico de barras empilhadas: participação modal por sexo
+    \item Tabela de crosstab: modal vs. renda
+    \item Gráfico de barras empilhadas: impacto da renda na escolha modal
+\end{itemize}
+
+\textbf{Insights principais:}
+\begin{itemize}
+    \item Mulheres usam mais transporte público que homens
+    \item Homens têm maior participação de carro e moto
+    \item Renda influencia fortemente: quanto maior a renda, maior uso de carro próprio
+    \item Faixas de renda baixa dependem fortemente de ônibus
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{perfildemografico1.png}
+\hfill
+\includegraphics[width=0.45\textwidth]{perfildemografico2.png}
+\caption{Perfil Demográfico - Cruzamentos demográficos e escolha modal}
+\end{figure}
+
+\section*{3.9 Modelos de Regressão}
+
+\textbf{Descrição:} Modelo de regressão linear para prever número de modais utilizados.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item Gráfico de dispersão: valores reais vs. preditos (com linha de tendência)
+    \item Métricas de performance: MSE, RMSE, R²
+    \item Gráfico de resíduos
+\end{itemize}
+
+\textbf{Resultados:}
+\begin{itemize}
+    \item R² Score: [valor]
+    \item RMSE: [valor]
+    \item Interpretação: modelo tem capacidade [baixa/média/alta] de predição
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{regressao.png}
+\caption{Modelo de Regressão - Predição de número de modais}
+\end{figure}
+
+\section*{3.10 Modelos de Classificação}
+
+\textbf{Descrição:} Modelos de machine learning para classificar tipo de trajeto.
+
+\textbf{Elementos visuais:}
+\begin{itemize}
+    \item Comparação de 3 modelos: Regressão Logística, Árvore de Decisão, Random Forest
+    \item Métricas para cada modelo: Acurácia, Precisão, Recall, F1-Score
+    \item Matrizes de confusão (heatmaps)
+    \item Curvas ROC com AUC
+\end{itemize}
+
+\textbf{Resultados:}
+\begin{itemize}
+    \item Melhor modelo: Random Forest (acurácia: XX\%)
+    \item Modelos têm dificuldade em prever classe multimodal (desbalanceamento)
+    \item Recomendação: usar técnicas de balanceamento (SMOTE, class weights)
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{classificacao.png}
+\caption{Modelos de Classificação - Comparação de performance}
+\end{figure}
+
+\chapter{4. Síntese dos Principais Insights}
+
+Esta seção consolida os principais achados da análise de dados de mobilidade urbana na RMR.
+
+\section*{4.1 Perfil Geral da População}
+
+\begin{itemize}
+    \item \textbf{População economicamente ativa:} 71\% da amostra trabalha, indicando foco em mobilidade para trabalho
+    \item \textbf{População estudantil significativa:} 40,5\% estuda, representando demanda por transporte escolar
+    \item \textbf{Distribuição etária:} Concentração nas faixas de 25-59 anos (população economicamente ativa)
+    \item \textbf{Distribuição por renda:} Predominância de faixas de baixa renda (até 3 SM), com implicações para políticas de transporte público
+\end{itemize}
+
+\section*{4.2 Padrões de Multimodalidade}
+
+\begin{itemize}
+    \item \textbf{Predominância monomodal:} Maioria das viagens utiliza apenas 1 modal (simplicidade preferida)
+    \item \textbf{Multimodalidade no trabalho:} Viagens ao trabalho apresentam maior taxa de multimodalidade (13.921 usuários)
+    \item \textbf{Média de modais:} 1,23 modais por pessoa, indicando que a multimodalidade ainda é exceção
+    \item \textbf{Combinações mais comuns:} "Ônibus + A pé" e "Ônibus + Metrô" dominam as viagens multimodais
+\end{itemize}
+
+\section*{4.3 Modal Share e Dependência de Transporte Público}
+
+\begin{itemize}
+    \item \textbf{Ônibus é rei:} Representa 40-50\% de todas as viagens, evidenciando dependência crítica do sistema
+    \item \textbf{Transporte ativo significativo:} "A pé" é o segundo modal mais usado, especialmente em curtas distâncias
+    \item \textbf{Baixa penetração de metrô:} Apesar de eficiente, o metrô tem alcance geográfico limitado
+    \item \textbf{Carro particular:} Concentrado em faixas de renda alta (acima de 5 SM)
+\end{itemize}
+
+\section*{4.4 Perfil dos Usuários de Integração}
+
+\begin{itemize}
+    \item \textbf{Perfil socioeconômico:} Predominância de usuários de baixa renda (até 3 SM), para quem a integração é essencial
+    \item \textbf{Faixa etária ativa:} Concentração em 25-59 anos, trabalhadores que dependem de integração para chegar ao emprego
+    \item \textbf{Importância do sistema:} Terminais de integração são cruciais para viabilizar mobilidade de populações periféricas
+    \item \textbf{Distribuição de gênero:} Relativamente equilibrada, indicando que integração é necessidade universal
+\end{itemize}
+
+\section*{4.5 Impacto da Renda na Mobilidade}
+
+\begin{itemize}
+    \item \textbf{Forte correlação renda-modal:} Quanto maior a renda, maior o uso de carro próprio
+    \item \textbf{Dependência do transporte público:} Faixas de renda até 3 SM dependem fortemente de ônibus/metrô
+    \item \textbf{Desigualdade de acesso:} Populações de baixa renda têm menos opções de modais, limitando mobilidade
+    \item \textbf{Implicação para políticas públicas:} Necessidade de subsídios e investimento em transporte público de qualidade
+\end{itemize}
+
+\section*{4.6 Diferenças de Gênero na Mobilidade}
+
+\begin{itemize}
+    \item \textbf{Mulheres usam mais transporte público:} Maior dependência de ônibus e metrô
+    \item \textbf{Homens usam mais veículos motorizados individuais:} Maior participação de carro e moto
+    \item \textbf{Segurança como fator:} Diferenças podem refletir preocupações com segurança e infraestrutura
+    \item \textbf{Necessidade de políticas de gênero:} Transporte público deve considerar necessidades específicas (iluminação, segurança, acessibilidade)
+\end{itemize}
+
+\section*{4.7 Padrões Geográficos}
+
+\begin{itemize}
+    \item \textbf{Bairros periféricos:} Alta dependência de ônibus, refletindo menor oferta de modais
+    \item \textbf{Bairros centrais:} Maior diversidade de modais, com presença de metrô e maior acesso a serviços
+    \item \textbf{Desigualdade espacial:} Distribuição desigual de infraestrutura de transporte entre centro e periferia
+    \item \textbf{Necessidade de expansão:} Investimento em transporte de massa em áreas periféricas é prioritário
+\end{itemize}
+
+\section*{4.8 Limitações dos Modelos Preditivos}
+
+\begin{itemize}
+    \item \textbf{Desbalanceamento de classes:} Multimodalidade é classe minoritária, dificultando predição
+    \item \textbf{R² moderado:} Modelos de regressão têm capacidade limitada de prever número exato de modais
+    \item \textbf{Random Forest como melhor opção:} Supera modelos lineares, mas ainda com espaço para melhoria
+    \item \textbf{Necessidade de mais features:} Variáveis adicionais (distância, tempo, custo) poderiam melhorar modelos
+\end{itemize}
+
+\section*{4.9 Recomendações para Políticas Públicas}
+
+\begin{enumerate}
+    \item \textbf{Expandir sistema de integração:} Construir mais terminais e facilitar baldeações gratuitas
+    \item \textbf{Investir em transporte de massa:} Expandir metrô e BRT para áreas periféricas
+    \item \textbf{Subsidiar tarifas para baixa renda:} Vale-transporte e tarifas sociais são essenciais
+    \item \textbf{Melhorar infraestrutura para caminhada:} Calçadas e iluminação para incentivar transporte ativo
+    \item \textbf{Segurança para mulheres:} Políticas específicas de segurança em transporte público
+    \item \textbf{Integração tarifária completa:} Tarifa única para ônibus + metrô reduziria custo para usuários
+    \item \textbf{Dados em tempo real:} Sistemas de informação para melhorar experiência do usuário
+\end{enumerate}
+
+\chapter{5. Demonstração de Domínio do Processo}
+
+Esta seção demonstra o domínio completo do processo de análise e visualização de dados, desde a coleta até a apresentação de resultados.
+
+\section*{5.1 Etapas do Processo de Análise}
+
+\subsection*{Etapa 1: Coleta e Compreensão dos Dados}
+
+\textbf{Fonte:} Pesquisa Origem-Destino 2016 da Região Metropolitana do Recife.
+
+\textbf{Características do dataset:}
+\begin{itemize}
+    \item 58.644 registros (respondentes)
+    \item 50+ variáveis (demográficas, socioeconômicas, padrões de viagem)
+    \item Dados mistos: numéricos, categóricos e texto livre
+    \item Valores ausentes significativos em algumas colunas
+\end{itemize}
+
+\textbf{Compreensão do contexto:}
+\begin{itemize}
+    \item Pesquisa domiciliar realizada pela Prefeitura do Recife
+    \item Objetivo: mapear padrões de deslocamento para planejamento urbano
+    \item Representatividade: amostra estratificada por bairro e renda
+\end{itemize}
+
+\subsection*{Etapa 2: Limpeza e Preparação dos Dados}
+
+\textbf{Tratamento de valores ausentes:}
+\begin{lstlisting}[language=Python, caption=Exemplo de limpeza de dados]
+# Substituir códigos numéricos por categorias legíveis
+SEXO_MAP = {1: 'Masculino', 2: 'Feminino'}
+df['sexo_desc'] = df['sexo'].map(SEXO_MAP)
+
+# Tratar valores ausentes em modais
+df['meio_transporte_trab'].fillna('Não declarado', inplace=True)
+
+# Converter strings de modais em listas
+def clean_modal(value):
+    if pd.isna(value):
+        return []
+    return [int(x) for x in str(value).split(',') if x.strip().isdigit()]
+
+df['modal_trabalho_list'] = df['meio_transporte_trab'].apply(clean_modal)
+\end{lstlisting}
+
+\textbf{Criação de variáveis derivadas:}
+\begin{lstlisting}[language=Python, caption=Engenharia de features]
+# Classificar tipo de trajeto (monomodal/multimodal)
+df['tipo_trajeto_trabalho'] = df['modal_trabalho_list'].apply(
+    lambda x: 'multimodal' if len(x) > 1 else 'monomodal' if len(x) == 1 else 'sem_resposta'
+)
+
+# Contar número de modais utilizados
+df['num_modais'] = df['modal_trabalho_list'].apply(len)
+
+# Identificar usuários de integração
+df['usuario_integracao'] = (
+    (df['utiliza_terminal_int_trabalho'] == 1) |
+    (df['terminal_int_trabalho'] != '0')
+)
+\end{lstlisting}
+
+\subsection*{Etapa 3: Análise Exploratória de Dados (EDA)}
+
+\textbf{Estatísticas descritivas:}
+\begin{itemize}
+    \item Distribuições de frequência para variáveis categóricas
+    \item Medidas de tendência central e dispersão para variáveis numéricas
+    \item Identificação de outliers e valores inconsistentes
+\end{itemize}
+
+\textbf{Análise bivariada:}
+\begin{itemize}
+    \item Crosstabs entre variáveis categóricas (sexo vs. modal, renda vs. modal)
+    \item Correlações entre variáveis numéricas
+    \item Testes de hipótese quando apropriado
+\end{itemize}
+
+\subsection*{Etapa 4: Visualização de Dados}
+
+\textbf{Princípios aplicados:}
+\begin{enumerate}
+    \item \textbf{Clareza:} Gráficos simples e diretos, sem poluição visual
+    \item \textbf{Consistência:} Mesma paleta de cores e estilos em todo dashboard
+    \item \textbf{Contexto:} Títulos descritivos, labels claros, unidades explícitas
+    \item \textbf{Hierarquia:} Informações mais importantes em destaque
+    \item \textbf{Interatividade:} Tooltips, zoom, filtros para exploração
+\end{enumerate}
+
+\textbf{Exemplo de código Plotly:}
+\begin{lstlisting}[language=Python, caption=Criação de gráfico interativo]
+# Gráfico de barras para distribuição por sexo
+sexo_counts = df_int['sexo_desc'].value_counts()
+fig = px.bar(
+    x=sexo_counts.index, 
+    y=sexo_counts.values,
+    labels={'x': 'Sexo', 'y': 'Número de Usuários'},
+    title='Usuários de Integração por Sexo',
+    color=sexo_counts.index,
+    color_discrete_map={
+        'Masculino': '#1f77b4', 
+        'Feminino': '#ff7f0e'
+    }
+)
+fig.update_layout(showlegend=False)
+st.plotly_chart(fig, use_container_width=True)
+\end{lstlisting}
+
+\subsection*{Etapa 5: Modelagem Preditiva}
+
+\textbf{Regressão Linear:}
+\begin{lstlisting}[language=Python, caption=Modelo de regressão]
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Preparar dados
+X = df[['idade', 'renda', 'distancia_trabalho']]
+y = df['num_modais']
+
+# Dividir em treino e teste
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Treinar modelo
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Avaliar
+y_pred = model.predict(X_test)
+r2 = r2_score(y_test, y_pred)
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+
+print(f"R2 Score: {r2:.4f}")
+print(f"RMSE: {rmse:.4f}")
+\end{lstlisting}
+
+\textbf{Classificação (Random Forest):}
+\begin{lstlisting}[language=Python, caption=Modelo de classificação]
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Preparar dados
+X = df[['sexo', 'idade', 'renda', 'bairro_encoded']]
+y = df['tipo_trajeto_trabalho']
+
+# Treinar modelo
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
+
+# Avaliar
+y_pred = rf.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+
+print(f"Acurácia: {accuracy:.4f}")
+print(classification_report(y_test, y_pred))
+\end{lstlisting}
+
+\subsection*{Etapa 6: Desenvolvimento do Dashboard}
+
+\textbf{Arquitetura do código:}
+\begin{itemize}
+    \item \texttt{app.py}: Arquivo principal com lógica do dashboard
+    \item Funções modulares: Cada página tem sua própria função (\texttt{show\_overview()}, \texttt{show\_modal\_share()}, etc.)
+    \item Cache de dados: \texttt{@st.cache\_data} para carregar dataset uma única vez
+    \item Separação de lógica: Preparação de dados vs. visualização
+\end{itemize}
+
+\textbf{Estrutura do app.py:}
+\begin{lstlisting}[language=Python, caption=Estrutura do dashboard]
+# 1. Configuração da página
+st.set_page_config(
+    page_title="Dashboard - Mobilidade Urbana RMR",
+    page_icon=":bus:",
+    layout="wide"
+)
+
+# 2. Funções de carregamento
+@st.cache_data
+def load_data():
+    df = pd.read_csv('dados/dataset2.csv')
+    return df
+
+# 3. Funções de preparação
+def prepare_data(df):
+    # Limpeza e feature engineering
+    return df
+
+# 4. Funções de visualização
+def show_overview(df):
+    # KPIs e gráficos da visão geral
+    pass
+
+# 5. Função principal
+def main():
+    df = load_data()
+    df = prepare_data(df)
+    
+    # Menu lateral
+    page = st.sidebar.radio("Selecione a página:", [...])
+    
+    # Roteamento
+    if page == "Visão Geral":
+        show_overview(df)
+    elif page == "Modal Share":
+        show_modal_share(df)
+    # ...
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+\subsection*{Etapa 7: Deploy e Documentação}
+
+\textbf{Deploy no Streamlit Cloud:}
+\begin{enumerate}
+    \item Conectar repositório GitHub ao Streamlit Cloud
+    \item Configurar \texttt{requirements.txt} com dependências
+    \item Especificar arquivo principal (\texttt{streamlit\_app/app.py})
+    \item Deploy automático a cada commit no branch main
+\end{enumerate}
+
+\textbf{Documentação:}
+\begin{itemize}
+    \item \texttt{README.md}: Instruções de instalação, execução e deploy
+    \item Comentários no código: Explicação de lógica complexa
+    \item Docstrings: Documentação de funções principais
+    \item Este documento LaTeX: Documentação formal do projeto
+\end{itemize}
+
+\section*{5.2 Ferramentas e Tecnologias Utilizadas}
+
+\subsection*{Linguagem de Programação}
+\begin{itemize}
+    \item \textbf{Python 3.11:} Linguagem principal para análise e dashboard
+\end{itemize}
+
+\subsection*{Bibliotecas de Análise de Dados}
+\begin{itemize}
+    \item \textbf{Pandas:} Manipulação e análise de dataframes
+    \item \textbf{NumPy:} Operações numéricas e arrays
+    \item \textbf{SciPy:} Estatística e testes de hipótese (se aplicado)
+\end{itemize}
+
+\subsection*{Bibliotecas de Visualização}
+\begin{itemize}
+    \item \textbf{Plotly Express:} Gráficos interativos principais
+    \item \textbf{Matplotlib:} Gráficos estáticos e personalizados
+    \item \textbf{Seaborn:} Visualizações estatísticas (heatmaps, distribuições)
+\end{itemize}
+
+\subsection*{Machine Learning}
+\begin{itemize}
+    \item \textbf{scikit-learn:} Modelos de regressão e classificação
+    \item \textbf{train\_test\_split:} Divisão treino/teste
+    \item \textbf{Métricas:} accuracy\_score, f1\_score, r2\_score, etc.
+\end{itemize}
+
+\subsection*{Framework Web}
+\begin{itemize}
+    \item \textbf{Streamlit:} Framework para criação do dashboard
+\end{itemize}
+
+\subsection*{Containerização e Deploy}
+\begin{itemize}
+    \item \textbf{Docker:} Containerização para ambiente reproduzível
+    \item \textbf{Docker Compose:} Orquestração de containers
+    \item \textbf{Streamlit Cloud:} Plataforma de deploy gratuita
+    \item \textbf{GitHub:} Controle de versão do código
+\end{itemize}
+
+\section*{5.3 Boas Práticas Aplicadas}
+
+\subsection*{Código}
+\begin{itemize}
+    \item \textbf{Modularização:} Funções separadas para cada responsabilidade
+    \item \textbf{Nomenclatura clara:} Variáveis e funções com nomes descritivos
+    \item \textbf{Comentários:} Explicação de lógica não-trivial
+    \item \textbf{Constantes:} Dicionários de mapeamento definidos no topo
+    \item \textbf{DRY (Don't Repeat Yourself):} Reutilização de código via funções
+\end{itemize}
+
+\subsection*{Visualização}
+\begin{itemize}
+    \item \textbf{Consistência visual:} Mesma paleta de cores e estilos
+    \item \textbf{Títulos descritivos:} Todo gráfico tem título claro
+    \item \textbf{Labels nos eixos:} Sempre com unidades quando aplicável
+    \item \textbf{Tooltips informativos:} Hover mostra dados detalhados
+    \item \textbf{Responsividade:} Gráficos adaptam a diferentes tamanhos de tela
+\end{itemize}
+
+\subsection*{Performance}
+\begin{itemize}
+    \item \textbf{Cache de dados:} \texttt{@st.cache\_data} para evitar recarregamento
+    \item \textbf{Lazy loading:} Carregar apenas página selecionada
+    \item \textbf{Agregações eficientes:} Usar \texttt{groupby} e \texttt{value\_counts} do Pandas
+\end{itemize}
+
+\subsection*{Documentação}
+\begin{itemize}
+    \item \textbf{README completo:} Instruções passo a passo
+    \item \textbf{Requirements.txt:} Lista todas as dependências
+    \item \textbf{Boxes de insights:} Cada análise tem interpretação destacada
+    \item \textbf{Documentação formal:} Este documento LaTeX
+\end{itemize}
+
+\chapter{6. Conclusões}
+
+\section*{6.1 Objetivos Alcançados}
+
+Este projeto teve como objetivo desenvolver uma solução analítica e visual completa para análise de mobilidade urbana na RMR. Os principais objetivos alcançados foram:
+
+\begin{enumerate}
+    \item \textbf{Dashboard interativo funcional:} Plataforma web com 11 páginas de análise, acessível online via Streamlit Cloud
+    \item \textbf{Análises demográficas detalhadas:} Identificação de perfis de usuários por sexo, idade, renda e localização
+    \item \textbf{Análise de multimodalidade:} Quantificação e caracterização de viagens que utilizam múltiplos modais
+    \item \textbf{Modelos preditivos:} Implementação de modelos de regressão e classificação com métricas de avaliação
+    \item \textbf{Insights acionáveis:} Recomendações práticas para políticas públicas de mobilidade urbana
+    \item \textbf{Clareza na comunicação visual:} Gráficos intuitivos, cores consistentes, tooltips informativos
+\end{enumerate}
+
+\section*{6.2 Aprendizados Principais}
+
+\subsection*{Técnicos}
+\begin{itemize}
+    \item Domínio de Streamlit para desenvolvimento rápido de dashboards
+    \item Experiência com Plotly para visualizações interativas
+    \item Prática em feature engineering e limpeza de dados reais
+    \item Implementação de pipeline completo: EDA → Modelagem → Deploy
+    \item Uso de Docker para padronizar ambientes de desenvolvimento
+\end{itemize}
+
+\subsection*{Analíticos}
+\begin{itemize}
+    \item Compreensão de padrões de mobilidade urbana e fatores que os influenciam
+    \item Importância do contexto socioeconômico em análise de dados
+    \item Limitações de modelos preditivos com dados desbalanceados
+    \item Valor de visualização para comunicar insights complexos
+\end{itemize}
+
+\subsection*{Processo}
+\begin{itemize}
+    \item Importância de iterações rápidas e feedback contínuo
+    \item Necessidade de documentar decisões durante o desenvolvimento
+    \item Valor de containerização para reprodutibilidade
+    \item Benefícios de deploy automatizado via GitHub
+\end{itemize}
+
+\section*{6.3 Limitações e Trabalhos Futuros}
+
+\subsection*{Limitações do projeto atual}
+\begin{itemize}
+    \item \textbf{Dados de 2016:} Dataset desatualizado (9 anos), não reflete mudanças recentes (COVID-19, novos modais)
+    \item \textbf{Falta de variáveis temporais:} Não há análise de variação ao longo do dia ou semana
+    \item \textbf{Ausência de dados geoespaciais:} Coordenadas geográficas permitiriam mapas interativos
+    \item \textbf{Modelos preditivos limitados:} R² moderado e acurácia afetada por desbalanceamento de classes
+    \item \textbf{Sem análise de custo:} Impacto financeiro das viagens não é considerado
+\end{itemize}
+
+\subsection*{Melhorias futuras}
+\begin{enumerate}
+    \item \textbf{Integração com dados em tempo real:} APIs de transporte público para dados atualizados
+    \item \textbf{Mapas interativos:} Usar Folium ou Plotly Maps para visualizar rotas e fluxos
+    \item \textbf{Análise temporal:} Padrões de pico de hora, sazonalidade, dias da semana
+    \item \textbf{Modelos avançados:} XGBoost, redes neurais, SMOTE para balanceamento
+    \item \textbf{Análise de custo-benefício:} Calcular economia de tempo e custo por modal
+    \item \textbf{Dashboard mobile:} Otimizar interface para smartphones
+    \item \textbf{Filtros interativos globais:} Permitir usuário filtrar por bairro, renda, etc. em todas as páginas
+    \item \textbf{Comparação com outras cidades:} Benchmark com São Paulo, Rio, Brasília
+    \item \textbf{Análise de acessibilidade:} Medir quão bem cada bairro é servido por transporte público
+    \item \textbf{Simulações de cenários:} "E se expandíssemos o metrô para bairro X?"
+\end{enumerate}
+
+\section*{6.4 Impacto Esperado}
+
+Este projeto tem potencial de impactar:
+
+\begin{itemize}
+    \item \textbf{Gestores públicos:} Subsidiar decisões sobre investimentos em transporte
+    \item \textbf{Planejadores urbanos:} Identificar áreas carentes de infraestrutura
+    \item \textbf{Operadores de transporte:} Otimizar rotas e frequências baseado em demanda
+    \item \textbf{Cidadãos:} Conscientização sobre padrões de mobilidade e necessidades
+    \item \textbf{Pesquisadores:} Base para estudos futuros em mobilidade urbana
+    \item \textbf{Desenvolvedores:} Análise dos dados para criar novas soluções tecnológicas
+\end{itemize}
+
+\section*{6.5 Conclusão}
+
+A análise de dados de mobilidade urbana é fundamental para construir cidades mais eficientes e sustentáveis. Este projeto demonstrou que, com ferramentas adequadas e clareza na comunicação visual, é possível transformar dados brutos em insights valiosos para tomadores de decisão.
+
+A Região Metropolitana do Recife enfrenta desafios típicos de grandes centros urbanos brasileiros: dependência excessiva de ônibus, infraestrutura desigual entre centro e periferia, e dificuldades de mobilidade para populações de baixa renda. As análises apresentadas neste dashboard evidenciam essas questões e apontam caminhos para soluções.
+
+O domínio do processo completo de análise e visualização de dados – desde a coleta e limpeza até a modelagem e deploy – é uma habilidade essencial para cientistas de dados modernos. Este projeto serviu como exercício prático dessas competências, com ênfase particular na clareza da comunicação visual, conforme solicitado nos critérios de avaliação.
+
+Por fim, espera-se que este trabalho contribua não apenas como entrega acadêmica, mas como ferramenta útil para quem se interessa por mobilidade urbana na RMR, seja para fins de pesquisa, planejamento ou advocacy por melhores políticas públicas.
+
+\end{document}

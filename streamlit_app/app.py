@@ -370,21 +370,24 @@ def show_trajectory_types(df):
     st.markdown('<h2 class="sub-header">🚇 Tipo de Trajeto (Monomodal vs Multimodal)</h2>', 
                 unsafe_allow_html=True)
     
-    # Métricas gerais
-    pct_trabalham = float(df["trabalha_flag"].mean())
-    pct_estudam = float(df["estuda_flag"].mean())
-    pct_terminal = float(df["usa_terminal_trabalho"].mean())
-    pct_integracao_aula = float(df["usa_integracao_aula"].mean())
+    # Métricas sobre multimodalidade
+    total_multimodal = ((df['tipo_trajeto_trabalho'] == 'multimodal') | 
+                        (df['tipo_trajeto_aula'] == 'multimodal')).sum()
+    pct_multimodal = ((df['tipo_trajeto_trabalho'] == 'multimodal') | 
+                      (df['tipo_trajeto_aula'] == 'multimodal')).mean()
+    total_monomodal = ((df['tipo_trajeto_trabalho'] == 'monomodal') | 
+                       (df['tipo_trajeto_aula'] == 'monomodal')).sum()
+    max_modais = int(df['num_modais'].max())
     
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric("Trabalham", f"{pct_trabalham*100:.1f}%")
+        st.metric("Usuários Multimodais", f"{total_multimodal:,}".replace(',', '.'))
     with c2:
-        st.metric("Estudam", f"{pct_estudam*100:.1f}%")
+        st.metric("Usuários Monomodais", f"{total_monomodal:,}".replace(',', '.'))
     with c3:
-        st.metric("Usam Terminal (trabalho)", f"{pct_terminal*100:.1f}%")
+        st.metric("% Multimodais", f"{pct_multimodal*100:.1f}%")
     with c4:
-        st.metric("Usam Integração (aula)", f"{pct_integracao_aula*100:.1f}%")
+        st.metric("Máx. de Modais Usado", f"{max_modais}")
     
     st.markdown("---")
     
